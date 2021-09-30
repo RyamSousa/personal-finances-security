@@ -1,2 +1,26 @@
-package com.personal_finances_security.security;public class CustomAuthorizationFilter {
+package com.personal_finances_security.security;
+
+import org.springframework.web.filter.OncePerRequestFilter;
+
+import javax.servlet.FilterChain;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+
+import static org.springframework.http.HttpHeaders.AUTHORIZATION;
+
+public class CustomAuthorizationFilter extends OncePerRequestFilter {
+
+    @Override
+    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
+        if(request.getServletPath().equals("api/login")){
+            filterChain.doFilter(request, response);
+        }else{
+            String authorizationHeadet = request.getHeader(AUTHORIZATION);
+            if(authorizationHeadet != null && authorizationHeadet.startsWith("Bearer ")){
+
+            }
+        }
+    }
 }

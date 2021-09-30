@@ -1,6 +1,6 @@
 package com.personal_finances_security.service;
 
-import com.personal_finances_security.model.Login;
+import com.personal_finances_security.model.LoginUser;
 import com.personal_finances_security.model.Role;
 import com.personal_finances_security.repository.LoginRepository;
 import com.personal_finances_security.repository.RoleRepository;
@@ -12,6 +12,7 @@ import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -27,11 +28,12 @@ public class LoginService implements UserDetailsService {
 
     private final LoginRepository loginRepository;
     private final RoleRepository roleRepository;
+    private final PasswordEncoder passwordEncoder;
 
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        Login login = this.findByUsername(username);
+        LoginUser login = this.findByUsername(username);
 
         Collection<SimpleGrantedAuthority> authorities = new ArrayList<>();
         login.getRoles().forEach(
@@ -43,30 +45,33 @@ public class LoginService implements UserDetailsService {
         return new User(login.getUsername(), login.getPassword(), authorities);
     }
 
-    public Login save(Login login){
+    public LoginUser save(LoginUser login){
         log.info("New login {}", login.getUsername());
+
+        login.setPassword(passwordEncoder.encode(login.getPassword()));
+
         return loginRepository.save(login);
     }
 
-    public Login delete(String username){
-        Login login = this.findByUsername(username);
+    public LoginUser delete(String username){
+        LoginUser login = this.findByUsername(username);
         loginRepository.delete(login);
         return login;
     }
 
-    public Login addRoleToLogin(String username, String roleName){
-        Login login = loginRepository.findByUsername(username);
+    public LoginUser addRoleToLogin(String username, String roleName){
+        LoginUser login = loginRepository.findByUsername(username);
         Role role = roleRepository.findByName(roleName);
         login.getRoles().add(role);
 
         return loginRepository.save(login);
     }
 
-    public Login findByUsername(String username){
+    public LoginUser findByUsername(String username){
         return loginRepository.findByUsername(username);
     }
 
-    public List<Login> findAllLongins(){
+    public List<LoginUser> findAllLongins(){
         return loginRepository.findAll();
     }
 

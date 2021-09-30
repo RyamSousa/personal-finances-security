@@ -1,10 +1,9 @@
 package com.personal_finances_security;
 
-import com.personal_finances_security.model.Login;
+import com.personal_finances_security.model.LoginUser;
 import com.personal_finances_security.model.Role;
 import com.personal_finances_security.service.LoginService;
 import com.personal_finances_security.service.RoleService;
-import lombok.extern.java.Log;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -34,9 +33,9 @@ public class PersonalFinancesSecurityApplication {
 			roleService.save(new Role(null, "ROLE_ADMIN"));
 			roleService.save(new Role(null, "ROLE_SUPER_ADMIN"));
 
-			loginService.save(new Login(null, "ryam", "1234", new ArrayList<>()));
-			loginService.save(new Login(null, "sousa", "123", new ArrayList<>()));
-			loginService.save(new Login(null, "alves", "12", new ArrayList<>()));
+			loginService.save(new LoginUser(null, "ryam", "1234", new ArrayList<>()));
+			loginService.save(new LoginUser(null, "sousa", "123", new ArrayList<>()));
+			loginService.save(new LoginUser(null, "alves", "12", new ArrayList<>()));
 
 			loginService.addRoleToLogin("ryam", "ROLE_SUPER_ADMIN");
 			loginService.addRoleToLogin("ryam", "ROLE_ADMIN");

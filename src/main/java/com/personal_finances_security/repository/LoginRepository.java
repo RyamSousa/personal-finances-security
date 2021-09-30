@@ -1,12 +1,12 @@
 package com.personal_finances_security.repository;
 
-import com.personal_finances_security.model.Login;
+import com.personal_finances_security.model.LoginUser;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface LoginRepository extends JpaRepository<Login, Long> {
+public interface LoginRepository extends JpaRepository<LoginUser, Long> {
 
-    Login findByUsername(String username);
+    LoginUser findByUsername(String username);
 
 }

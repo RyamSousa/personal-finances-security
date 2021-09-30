@@ -1,8 +1,6 @@
 package com.personal_finances_security.service;
 
-import com.personal_finances_security.model.Login;
 import com.personal_finances_security.model.Role;
-import com.personal_finances_security.repository.LoginRepository;
 import com.personal_finances_security.repository.RoleRepository;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
