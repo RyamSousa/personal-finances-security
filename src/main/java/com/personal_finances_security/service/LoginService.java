@@ -5,6 +5,7 @@ import com.personal_finances_security.model.Role;
 import com.personal_finances_security.repository.LoginRepository;
 import com.personal_finances_security.repository.RoleRepository;
 import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -23,7 +24,7 @@ import java.util.List;
 @Service
 @Transactional
 @Slf4j
-@AllArgsConstructor(onConstructor = @__(@Autowired))
+@RequiredArgsConstructor
 public class LoginService implements UserDetailsService {
 
     private final LoginRepository loginRepository;

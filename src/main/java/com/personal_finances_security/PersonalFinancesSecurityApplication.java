@@ -42,7 +42,7 @@ public class PersonalFinancesSecurityApplication {
 			loginService.addRoleToLogin("ryam", "ROLE_MANAGER");
 			loginService.addRoleToLogin("ryam", "ROLE_USER");
 
-			loginService.addRoleToLogin("alves", "ROLE_MANAGER");
+			loginService.addRoleToLogin("alves", "ROLE_USER");
 			loginService.addRoleToLogin("alves", "ROLE_ADMIN");
 
 			loginService.addRoleToLogin("sousa", "ROLE_USER");

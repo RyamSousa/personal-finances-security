@@ -10,6 +10,7 @@ import com.personal_finances_security.model.LoginUser;
 import com.personal_finances_security.model.Role;
 import com.personal_finances_security.service.LoginService;
 import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -25,15 +26,15 @@ import static org.springframework.http.HttpStatus.FORBIDDEN;
 import static org.springframework.http.MediaType.*;
 
 @RestController
-@RequestMapping("/api/login/user")
-@AllArgsConstructor(onConstructor = @__(@Autowired))
+@RequestMapping("/api")
+@RequiredArgsConstructor
 public class LoginController {
 
     private final LoginService loginService;
 
     @GetMapping(value = "/users", produces = APPLICATION_JSON_VALUE)
     public ResponseEntity<List<LoginUser>> findAllLogins(){
-        return ResponseEntity.ok(loginService.findAllLongins());
+        return ResponseEntity.ok().body(loginService.findAllLongins());
     }
 
     @PostMapping(value = "/save", consumes = APPLICATION_JSON_VALUE, produces = APPLICATION_JSON_VALUE)
@@ -53,15 +54,15 @@ public class LoginController {
 
         if(authorizationHeader != null && authorizationHeader.startsWith("Bearer ")){
             try {
-                String token = authorizationHeader.substring("Bearer ".length());
+                String refresh_token = authorizationHeader.substring("Bearer ".length());
                 Algorithm algorithm = Algorithm.HMAC256("secret".getBytes());
                 JWTVerifier verifier = JWT.require(algorithm).build();
-                DecodedJWT decodedJWT = verifier.verify(token);
+                DecodedJWT decodedJWT = verifier.verify(refresh_token);
 
                 String username = decodedJWT.getSubject();
                 LoginUser loginUser = loginService.findByUsername(username);
 
-                String refresh_token = JWT.create()
+                String access_token = JWT.create()
                         .withSubject(loginUser.getUsername())
                         .withExpiresAt(new Date(System.currentTimeMillis() + (10 * 60 * 1000)))
                         .withIssuer(request.getRequestURL().toString())
@@ -70,7 +71,7 @@ public class LoginController {
                         .sign(algorithm);
 
                 Map<String, String> tokens = new HashMap<>();
-                tokens.put("access_token", refresh_token);
+                tokens.put("access_token", access_token);
                 tokens.put("refresh_token", refresh_token);
 
                 response.setContentType(APPLICATION_JSON_VALUE);
